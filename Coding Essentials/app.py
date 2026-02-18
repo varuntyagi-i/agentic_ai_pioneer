@@ -73,14 +73,24 @@ def company_info():
     if not info:
         return _error(f"No company info found for symbol '{symbol}'", 404)
 
+    officers = info.get("companyOfficers") or []
+    key_officers = []
+    for officer in officers:
+        if not isinstance(officer, dict):
+            continue
+        name = officer.get("name")
+        title = officer.get("title")
+        if name or title:
+            key_officers.append({"name": name, "title": title})
+
     response = {
         "symbol": symbol,
-        "company_name": info.get("longName") or info.get("shortName"),
-        "sector": info.get("sector"),
-        "industry": info.get("industry"),
+        "Company Name": info.get("longName") or info.get("shortName"),
+        "Sector": info.get("sector"),
+        "Industry": info.get("industry"),
         "country": info.get("country"),
         "website": info.get("website"),
-        "description": info.get("longBusinessSummary"),
+        "Business Summary": info.get("longBusinessSummary"),
         "market_cap": info.get("marketCap"),
         "enterprise_value": info.get("enterpriseValue"),
         "employees": info.get("fullTimeEmployees"),
@@ -88,6 +98,7 @@ def company_info():
         "forward_pe": info.get("forwardPE"),
         "dividend_yield": info.get("dividendYield"),
         "beta": info.get("beta"),
+        "key_officers": key_officers,
     }
     return jsonify(response)
 
@@ -105,7 +116,7 @@ def stock_market_data():
         "symbol": symbol,
         "currency": fast.get("currency"),
         "exchange": fast.get("exchange"),
-        "last_price": _safe_float(fast.get("lastPrice")),
+        "current_market_price": _safe_float(fast.get("lastPrice")),
         "previous_close": _safe_float(fast.get("previousClose")),
         "open": _safe_float(fast.get("open")),
         "day_high": _safe_float(fast.get("dayHigh")),
@@ -117,13 +128,14 @@ def stock_market_data():
         "as_of": datetime.utcnow().isoformat() + "Z",
     }
 
-    if response["last_price"] is None:
+    if response["current_market_price"] is None:
         intraday = ticker.history(period="1d", interval="1m")
         if intraday.empty:
             return _error(f"No market data found for symbol '{symbol}'", 404)
         latest = intraday.iloc[-1]
         response.update(
             {
+                "current_market_price": _safe_float(latest.get("Close")),
                 "last_price": _safe_float(latest.get("Close")),
                 "open": _safe_float(latest.get("Open")),
                 "day_high": _safe_float(intraday["High"].max()),
