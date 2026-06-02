@@ -1,2 +1,7 @@
 .venv
 .env
+
+
+# datafile
+**.pdf
+**.zip
