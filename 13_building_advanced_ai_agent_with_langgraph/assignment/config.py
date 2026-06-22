@@ -42,11 +42,16 @@ class ReflectionSettings(BaseModel):
     max_steps: int = Field(gt=0)
 
 
+class ExecutionSettings(BaseModel):
+    verbose: bool = True
+
+
 class AppSettings(BaseModel):
     openai: OpenAISettings
     tavily: TavilySettings
     rag: RAGSettings
     reflection: ReflectionSettings
+    execution: ExecutionSettings
 
 
 def load_settings() -> AppSettings:

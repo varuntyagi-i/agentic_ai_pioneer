@@ -14,3 +14,5 @@ rag:
 reflection:
   max_steps: 4
 
+execution:
+  verbose: true

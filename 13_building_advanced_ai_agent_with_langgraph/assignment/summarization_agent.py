@@ -30,16 +30,19 @@ def summarization_node(state: AgentState) -> dict:
         f"[{number}] {source['title']} — {source['url']}"
         for number, source in enumerate(sources, start=1)
     )
-    user_prompt = f"""Question:
-{state['query']}
+    user_prompt = f"""
+                        Question:
+                        {state['query']}
 
-Selected route: {state.get('route', 'standalone')}
+                        Selected route: {state.get('route', 'standalone')}
 
-Research context:
-{state.get('gathered_context', '') or 'No research context was returned.'}
+                        Research context:
+                        {state.get('gathered_context', '') or 'No research context was returned.'}
 
-Available sources:
-{source_list or 'None'}"""
+                        Available sources:
+                        {source_list or 'None'}
+                    """
+
     response = get_llm().invoke(
         [
             SystemMessage(content=SUMMARIZER_PROMPT),
@@ -74,4 +77,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

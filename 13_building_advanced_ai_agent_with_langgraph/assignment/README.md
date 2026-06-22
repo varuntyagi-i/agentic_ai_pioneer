@@ -71,6 +71,17 @@ Keep only secrets in `.env`. Non-secret runtime settings such as model names,
 Tavily search depth, RAG chunking, and the reflection limit are configured in
 `config.yaml`.
 
+Execution tracing is enabled by default with `execution.verbose: true`. It displays
+the agent/node being executed, routing decisions, reflection steps, search fan-out,
+evidence counts, and the final transition to `END`. It deliberately avoids printing
+full prompts, evidence, or secrets. Override it for a run with `--verbose` or
+`--no-verbose`:
+
+```bash
+python 13_building_advanced_ai_agent_with_langgraph/assignment/main.py \
+  "Explain multi-head attention" --verbose
+```
+
 Interactive mode keeps the same memory thread:
 
 ```bash
