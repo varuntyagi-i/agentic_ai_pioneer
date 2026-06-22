@@ -1,0 +1,16 @@
+openai:
+  model: gpt-4.1-mini
+  embedding_model: text-embedding-3-small
+
+tavily:
+  search_depth: advanced
+  max_results: 4
+
+rag:
+  top_k: 5
+  chunk_size: 1200
+  chunk_overlap: 200
+
+reflection:
+  max_steps: 4
+
