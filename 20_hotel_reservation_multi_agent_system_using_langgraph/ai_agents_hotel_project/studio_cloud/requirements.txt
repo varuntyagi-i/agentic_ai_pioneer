@@ -1,0 +1,11 @@
+langgraph
+langchain_openai
+langchain_pinecone
+langchain_core
+langchain_community
+langgraph-sdk
+pypdf
+fpdf
+python-dotenv
+sqlalchemy-sqlitecloud
+pinecone
